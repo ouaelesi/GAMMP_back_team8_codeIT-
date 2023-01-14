@@ -41,4 +41,5 @@ const users = new Mongoose.Schema({
   //   type: String,
   //   required: true,
 });
-Mongoose.model("User", users);
+
+module.exports = Mongoose.model("User", users);
