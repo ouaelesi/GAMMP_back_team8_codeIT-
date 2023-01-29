@@ -1,5 +1,5 @@
 const Mongoose = require("mongoose");
-const activities = new Mongoose.Schema({
+const activitySchema = new Mongoose.Schema({
   type: {
     type: String,
     enum: ["events", "project", "internal_activity", "community"],
@@ -34,4 +34,7 @@ const activities = new Mongoose.Schema({
   //   required: true,
   // },
 });
-Mongoose.model("Activities", activities);
+
+const Activity = Mongoose.model("Activities", activitySchema);
+
+module.exports = Activity;
