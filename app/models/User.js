@@ -1,5 +1,5 @@
 const Mongoose = require("mongoose");
-const users = new Mongoose.Schema({
+const userSchema = new Mongoose.Schema({
   unique_id: {
     type: String,
     required: true,
@@ -41,4 +41,7 @@ const users = new Mongoose.Schema({
   //   type: String,
   //   required: true,
 });
-Mongoose.model("User", users);
+
+const User = Mongoose.model("user", userSchema);
+
+module.exports = User;

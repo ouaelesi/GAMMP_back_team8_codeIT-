@@ -1,5 +1,5 @@
 const Mongoose = require("mongoose");
-const rank = new Mongoose.Schema({
+const rankSchema = new Mongoose.Schema({
   general_point: {
     type: Number,
     required: true,
@@ -25,4 +25,7 @@ const rank = new Mongoose.Schema({
     required: true,
   },
 });
-Mongoose.model("Rank", rank);
+
+const Rank = Mongoose.model("Rank", rankSchema);
+
+module.exports = Rank;
