@@ -1,5 +1,6 @@
-const Mongoose = require("mongoose");
-const activitySchema = new Mongoose.Schema({
+const mongoose = require("mongoose");
+
+const activitySchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ["events", "project", "internal_activity", "community"],
@@ -9,32 +10,28 @@ const activitySchema = new Mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
-    type: Date,
+  mainManager: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
-  // e/p manager: {
-  //   type: String,
-  //   required: true,
-  // },
-  managers: {
-    type: String,
+  managers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
-  },
-  team_leaders: {
-    type: String,
+  }],
+  teamLeaders: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    }],
+  organizers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
-  },
-  organisateurs: {
-    type: String,
-    required: true,
-  },
-  // task: {
-  //   type: String,
-  //   required: true,
-  // },
-});
+  }],
+}, {timestamps: true});
 
-const Activity = Mongoose.model("Activities", activitySchema);
+const Activity = mongoose.model("Activity", activitySchema);
 
 module.exports = Activity;

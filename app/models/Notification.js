@@ -25,12 +25,10 @@ const notificationSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  // read_time: {
-  //   type: TimeRanges,
-  //   required: true,
-  // },
+  //read time <==> updatedAt
+
 }, {timestamps: true}); //the timestamps option will automatically add "created at" and "updated at" for the object
 
-const Notification = mongoose.model("notifications", notificationSchema);
+const Notification = mongoose.model("Notification", notificationSchema);
 
 module.exports = Notification;

@@ -1,5 +1,6 @@
-const Mongoose = require("mongoose");
-const rankSchema = new Mongoose.Schema({
+const mongoose = require("mongoose");
+
+const rankSchema = new mongoose.Schema({
   general_point: {
     type: Number,
     required: true,
@@ -19,13 +20,9 @@ const rankSchema = new Mongoose.Schema({
   why: {
     type: String,
     required: true,
-  },
-  time_stamp: {
-    type: Date,
-    required: true,
-  },
-});
+  }
+}, {timestamps: true});
 
-const Rank = Mongoose.model("Rank", rankSchema);
+const Rank = mongoose.model("Rank", rankSchema);
 
 module.exports = Rank;

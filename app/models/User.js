@@ -1,19 +1,11 @@
-const Mongoose = require("mongoose");
-const userSchema = new Mongoose.Schema({
-  unique_id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email: {
-    type: Number,
-    required: true,
-  },
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
   first_name: {
     type: String,
     required: true,
   },
-  family_name: {
+  last_name: {
     type: String,
     required: true,
   },
@@ -33,15 +25,42 @@ const userSchema = new Mongoose.Schema({
     type: String,
     required: true,
   },
-  id_password: {
+  email: {
+    type: Number,
+    required: true,
+  },
+  password: {
     type: String,
     required: true,
   },
-  //  role: {
-  //   type: String,
-  //   required: true,
+  role: {
+    type: String,
+    enum: ["lead", "co-lead", "manager", "member", "alumni"],
+    default: "member",
+  },
+  status: {
+    type: String,
+    enum: ["pending", "confirmed", "banned"],
+    default: "pending",
+  },
+  department: {
+    type: String,
+    enum: ["none","development", "design", "multimedia", "communication", "marketing"],
+    default: "none",
+  },
+  contributions: [{
+    activityID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Activity"
+    },
+    role: {
+      type: String,
+      enum: ["project-manager", "manager", "team-leader", "organizer"],
+      default: "organizer",
+    }
+  }]
 });
 
-const User = Mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
