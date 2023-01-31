@@ -58,7 +58,11 @@ const userSchema = new mongoose.Schema({
       enum: ["project-manager", "manager", "team-leader", "organizer"],
       default: "organizer",
     }
-  }]
+  }],
+  rank: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Rank'
+  }
 });
 
 const User = mongoose.model("User", userSchema);

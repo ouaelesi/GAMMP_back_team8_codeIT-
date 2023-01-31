@@ -1,26 +1,30 @@
 const mongoose = require("mongoose");
 
 const rankSchema = new mongoose.Schema({
-  general_point: {
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  generalPoints: {
     type: Number,
     required: true,
   },
-  manager_point: {
+  totalAddedPoints: {
     type: Number,
     required: true,
   },
-  date_change: {
-    type: Date,
-    required: true,
-  },
-  value_point: {
-    type: Number,
-    required: true,
-  },
-  why: {
-    type: String,
-    required: true,
-  }
+  history: [{
+    addedPoints: {
+      type: Number
+    },
+    addedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    reason: {
+      type: String
+    }
+  }]
 }, {timestamps: true});
 
 const Rank = mongoose.model("Rank", rankSchema);
