@@ -2,8 +2,8 @@ const Mongoose = require("mongoose");
 const activitySchema = new Mongoose.Schema({
   type: {
     type: String,
-    enum: ["events", "project", "internal_activity", "community"],
-    default: "events",
+    enum: ["event", "project", "internal_activity", "community"],
+    default: "event",
   },
   description: {
     type: String,
