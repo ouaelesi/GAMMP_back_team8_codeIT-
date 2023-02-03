@@ -36,7 +36,13 @@ const userSchema = new mongoose.Schema({
   isAdmin: {
     type: Boolean,
     required: true,
+    default: false,
   },
+  isBanned: {
+    type: Boolean,
+    required: true,
+    default: false,
+  }
   role: {
     type: String,
     enum: ["lead", "co-lead", "manager", "member", "alumni"],
