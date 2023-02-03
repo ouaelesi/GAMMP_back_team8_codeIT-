@@ -1,23 +1,23 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  first_name: {
+  firstName: {
     type: String,
     required: true,
   },
-  last_name: {
+  lastName: {
     type: String,
     required: true,
   },
-  discord_id: {
+  discordID: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
     type: Number,
     required: true,
   },
-  phone_number: {
-    type: Number,
-    required: true,
-  },
-  year_of_study: {
+  yearOfStudy: {
     type: Number,
     required: true,
   },
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   email: {
-    type: Number,
+    type: String,
     required: true,
   },
   password: {

@@ -5,20 +5,21 @@ const notificationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  type: {
+    type: String, //warning, promotion, demotion, addition to an activity
+    required: true,
+  },
   body: {
     type: String,
     required: true,
   },
   from: {
-    type: String, //to be checked
+    type: String, //admin, system
     required: true,
   },
   receiver: {
-    type: String, // mongoose.Schema.Types.ObjectId
-    required: true,
-  },
-  type: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId , // mongoose.Schema.Types.ObjectId
+    ref: 'User',
     required: true,
   },
   isRead: {
