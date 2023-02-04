@@ -29,7 +29,7 @@ module.exports.insertUser = async (req, res) =>{
 
 }
 
-module.exports.updatetUser = async (req, res) =>{
+module.exports.updateUser = async (req, res) =>{
     try{
         const user=await User.findById(req.params.id);
         if(user){
