@@ -1,12 +1,15 @@
 const express = require("express");
 const mongoose = require('mongoose');
 const app = express();
+const cookieParser = require('cookie-parser');
+
 const PORT = 5000;
 
 const notificationsRoutes = require('./app/routes/notificationsRoutes');
 const activitiesRoutes = require('./app/routes/activityRoutes');
 
 app.use(express.json());
+app.use(cookieParser());
 
 const dbURI = 'mongodb+srv://admin:admin@cluster0.ltqof.mongodb.net/NodeJS?retryWrites=true&w=majority';
 
