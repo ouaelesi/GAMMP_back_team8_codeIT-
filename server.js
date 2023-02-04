@@ -5,6 +5,7 @@ const PORT = 5000;
 
 const notificationsRoutes = require('./app/routes/notificationsRoutes');
 const activitiesRoutes = require('./app/routes/activityRoutes');
+const adminRoutes = require('./app/routes/adminRoutes');
 
 app.use(express.json());
 
@@ -25,3 +26,4 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use(notificationsRoutes);
 app.use(activitiesRoutes);
+app.use(adminRoutes);
