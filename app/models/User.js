@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   yearOfStudy: {
-    type: Number,
+    type: String,
     required: true,
   },
   country: {
@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false,
-  }
+  },
   role: {
     type: String,
     enum: ["lead", "co-lead", "manager", "member", "alumni"],
