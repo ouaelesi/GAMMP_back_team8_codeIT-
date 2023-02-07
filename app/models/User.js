@@ -90,10 +90,11 @@ userSchema.pre('save', async function(next) {
 
 //function to hash the password when it's updated before it's saved to the database
 userSchema.pre('findOneAndUpdate', async function(next) {
-
   try {
     const salt = await bcrypt.genSalt();
+    
     if(this._update.password) this._update.password = await bcrypt.hash(this._update.password, salt); //"this" refers to the local version of the document (object) before it's saved
+    
     next();
   
   } catch (error) {
