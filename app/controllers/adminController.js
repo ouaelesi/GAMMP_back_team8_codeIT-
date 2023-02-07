@@ -1,24 +1,4 @@
-const { default: mongoose } = require('mongoose');
 const User = require('../models/User') ;
-
-
-module.exports.getUser = async (req, res) =>{
-    _id = req.params.id;
-    try{
-        const user = await User.findById(_id);
-
-        if(user){
-            res.status(200).send(user);
-        
-        }else{
-            res.status(404).json({message: "User not found"});
-        }
-        
-    }catch(err){
-        console.log("fetch failed");
-        res.status(500).json({message: err.message});
-    }
-}
 
 module.exports.insertUser = async (req, res) =>{
     try{
@@ -33,7 +13,7 @@ module.exports.insertUser = async (req, res) =>{
 
 }
 
-module.exports.updateUser = async (req, res) =>{
+module.exports.updateCredintials = async (req, res) =>{
     _id = req.params.id;
     try{
         const user=await User.findOneAndUpdate({_id}, req.body, {new: true});
@@ -71,7 +51,7 @@ module.exports.deleteUser = async (req, res) =>{
 module.exports.banUser = async (req, res) =>{
     _id = req.params.id;
     try{
-        const user=await User.findOneAndUpdate({_id}, {isBanned: true}, {new: true});
+        const user=await User.findOneAndUpdate({_id}, {status: 'banned'}, {new: true});
         if(user){
             res.status(200).json(user);
 
@@ -89,7 +69,7 @@ module.exports.banUser = async (req, res) =>{
 module.exports.unbanUser = async (req, res) =>{
     _id = req.params.id;
     try{
-        const user=await User.findOneAndUpdate({_id}, {isBanned: false}, {new: true});
+        const user=await User.findOneAndUpdate({_id}, {status: 'confirmed'}, {new: true});
         if(user){
             res.status(200).json(user);
 

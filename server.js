@@ -9,6 +9,7 @@ const notificationsRoutes = require('./app/routes/notificationsRoutes');
 const activitiesRoutes = require('./app/routes/activityRoutes');
 const adminRoutes = require('./app/routes/adminRoutes');
 const userRoutes = require('./app/routes/userRoutes');
+const {checkUser} = require('./app/middleware/userMiddleware');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -28,8 +29,17 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
   .catch((err) => console.log(err));
   
 
+app.use('/*', checkUser);
 app.use(notificationsRoutes);
 app.use(activitiesRoutes);
 app.use(userRoutes);
 app.use(adminRoutes);
 
+/*
+  1- Bind schemas together using refs 
+  2- Add a verification of "isBanned" when logging in ==> done
+  3- change the isBanned property in the schema ==> done 
+  4- in admin routes, change checkUser to requireAuth, change checkAdmin to requireAdmin ==> done
+  5- decide where to put each middleware in the routes ==> done
+  6- Final decision about whether or not to integrate the Rank in the user schema
+*/

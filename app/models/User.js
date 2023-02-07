@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { isEmail } = require('validator');
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
@@ -16,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: Number,
-    required: true,
+    default: null,
   },
   yearOfStudy: {
     type: Number,
@@ -29,14 +30,14 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'No email address provided'],
     unique: true,
     //lowercase: true,
-    //validate: isEmail
+    validate: [isEmail, 'Invalid email address']
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'No password provided'],
     //minlength: 6,
   },
   isAdmin: {
@@ -44,11 +45,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
-  isBanned: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
+  // isBanned: {
+  //   type: Boolean,
+  //   required: true,
+  //   default: false,
+  // },
   role: {
     type: String,
     enum: ["lead", "co-lead", "manager", "member", "alumni"],
@@ -64,6 +65,10 @@ const userSchema = new mongoose.Schema({
     enum: ["none","development", "design", "multimedia", "communication", "marketing"],
     default: "none",
   },
+  notifications: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Notification',
+  }],
   contributions: [{
     activityID: {
       type: mongoose.Schema.Types.ObjectId,

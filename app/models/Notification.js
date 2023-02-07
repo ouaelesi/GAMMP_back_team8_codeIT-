@@ -1,13 +1,19 @@
 const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema({
+  receiver: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   title: {
     type: String,
     required: true,
   },
   type: {
-    type: String, //warning, promotion, demotion, addition to an activity
+    type: String,
     required: true,
+    enum: ["warning, promotion, demotion, activity, points"]
   },
   body: {
     type: String,
@@ -15,11 +21,6 @@ const notificationSchema = new mongoose.Schema({
   },
   from: {
     type: String, //admin, system
-    required: true,
-  },
-  receiver: {
-    type: mongoose.Schema.Types.ObjectId , // mongoose.Schema.Types.ObjectId
-    ref: 'User',
     required: true,
   },
   isRead: {
