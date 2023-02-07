@@ -4,16 +4,16 @@ const Activity = require('../models/Activity') ;
 
 module.exports.get = async (req, res) =>{
     try{
-        const activity = await Activity.findById(mongoose.Types.ObjectId(req.params.id));
+        const activity = await Activity.findById(req.params.id);
+
         if(activity){
-            res.status(200).send(activity);
+            res.status(200).json(activity);
         }else{
-            res.status(404).send("Not found");
+            res.status(404).json("Not found");
         }
-        console.log(`LOGS: Getting activity with id = ${req.params.id}`);
+
     }catch(err){
-        console.log("Getting the activity with id failed" + err);
-        res.status(500).send("Error");
+        res.status(500).json({message: err.message});
     }
 }
 
