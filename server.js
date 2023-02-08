@@ -9,6 +9,8 @@ const notificationsRoutes = require('./app/routes/notificationsRoutes');
 const activitiesRoutes = require('./app/routes/activityRoutes');
 const adminRoutes = require('./app/routes/adminRoutes');
 const userRoutes = require('./app/routes/userRoutes');
+const rankRoutes = require('./app/routes/rankRoutes');
+const {checkUser} = require('./app/middleware/userMiddleware');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -27,5 +29,9 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
   })
   .catch((err) => console.log(err));
   
-
-
+app.use('/*', checkUser);
+app.use(notificationsRoutes);
+app.use(activitiesRoutes);
+app.use(userRoutes);
+app.use(adminRoutes);
+app.use(rankRoutes);

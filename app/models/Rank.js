@@ -9,10 +9,12 @@ const rankSchema = new mongoose.Schema({
   generalPoints: {
     type: Number,
     required: true,
+    default: 0,
   },
   totalAddedPoints: {
     type: Number,
     required: true,
+    default: 0,
   },
   history: [{
     addedPoints: {

@@ -79,9 +79,9 @@ module.exports.notification_create = async (req,res)=>{
 }
 
 module.exports.notification_delete = (req, res)=>{
-	const id = req.params.id;
+	const _id = req.params.id;
 
-    Notification.findByIdAndDelete(id, (error, notification) => {
+    Notification.findByIdAndDelete({_id}, (error, notification) => {
         if (error) {
             res.status(400).json({message: error.message});
         } else {
