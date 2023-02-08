@@ -6,21 +6,8 @@ const notificationSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  title: {
+  content: {
     type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-    enum: ["warning, promotion, demotion, activity, points"]
-  },
-  body: {
-    type: String,
-    required: true,
-  },
-  from: {
-    type: String, //admin, system
     required: true,
   },
   isRead: {

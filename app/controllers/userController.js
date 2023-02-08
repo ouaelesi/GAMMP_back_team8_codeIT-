@@ -6,7 +6,9 @@ module.exports.getUser = async (req, res) =>{
     _id = req.params.id;
     try{
         const user = await User.findById(_id)
-            .populate('notifications contributions.activityID')
+            .populate('notifications')
+            .populate({path: 'contributions.activityID', select: 'name'})
+            .populate('rank')
 
         if(user){
             res.status(200).send(user);
