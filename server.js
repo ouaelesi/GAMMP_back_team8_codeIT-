@@ -29,23 +29,9 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
   })
   .catch((err) => console.log(err));
   
-
 app.use('/*', checkUser);
 app.use(notificationsRoutes);
 app.use(activitiesRoutes);
 app.use(userRoutes);
 app.use(adminRoutes);
 app.use(rankRoutes);
-
-/*
-  1- Bind schemas together using refs 
-  2- Add a verification of "isBanned" when logging in ==> done
-  3- change the isBanned property in the schema ==> done 
-  4- in admin routes, change checkUser to requireAuth, change checkAdmin to requireAdmin ==> done
-  5- decide where to put each middleware in the routes ==> done
-  6- Final decision about whether or not to integrate the Rank in the user schema (keep ranks seperate)
-  7- Create a route "add points" and "remove points", and to make internal
-    calls check this: https://stackoverflow.com/questions/38946943/calling-express-route-internally-from-inside-nodejs
-
-  
-  */
