@@ -1,137 +1,131 @@
-const { default: mongoose } = require('mongoose');
 const User = require('../models/User') ;
-
-
-module.exports.getUser = async (req, res) =>{
-    try{
-        const user = await User.findById(mongoose.Types.ObjectId(req.params.id));
-        if(user){
-            res.status(200).send(user);
-        }else{
-            res.status(404).send("Not found");
-        }
-        console.log(`LOGS: Getting user with id = ${req.params.id}`);
-    }catch(err){
-        console.log("Getting the user with id failed" + err);
-        res.status(500).send("Error");
-    }
-}
+const Rank = require('../models/Rank');
 
 module.exports.insertUser = async (req, res) =>{
     try{
+        //creat a new user
         const user = await User.create(req.body);
-        console.log("LOGS: Adding user");
-        res.status(200).send({message:"SUCCESS: Creation succeeded", user:user});
+
+        //creating the rank associated to the user
+        const _id = user._id;
+        const rank = await Rank.create({owner: _id});
+
+        //update the rank field of the user
+        user.rank = rank._id;
+        await user.save();
+
+        res.status(200).json(user);
+
     }catch(err){
-        console.log("creation failed " + err.message);
-        res.status(500).send("Error");
+
+        console.log("Creation failed");
+        res.status(500).json({message: err.message});
     }
 
 }
 
-module.exports.updateUser = async (req, res) =>{
+module.exports.updateCredintials = async (req, res) =>{
+    _id = req.params.id;
     try{
-        const user=await User.findById(req.params.id);
-        if(user){
-                await User.updateOne({_id:req.params.id}, req.body);
-                console.log(`LOGS: update succeded of user with id= ${req.params.id}`);
-                res.status(200).send("SUCCESS: update successded for the user");
-            }else{
-            res.status(404).send("User not found");
+        const user=await User.findOneAndUpdate({_id}, req.body, {new: true});
+        if(user){    
+            res.status(200).json(user);
+
+        }else{
+            res.status(404).json({message: "User not found"});
         }
+
     }catch(err){
-        console.log("Updating failed\n" + err);
-        res.status(500).send("Updating failed");
+        console.log("User update failed");
+        res.status(500).json({message: err.message});
     }
 }
 
 module.exports.deleteUser = async (req, res) =>{
+    _id = req.params.id;
     try{
-        const user=await User.findById(req.params.id);
+        const user=await User.findOneAndDelete({_id});
         if(user){
-            await User.deleteOne({_id:req.params.id});
-            console.log(`LOGS: suppression succeded of user with id= ${req.params.id}`);
-            res.status(200).send("SUCCESS: suppression succeded of user");
+            res.status(200).json(user);
+
         }else{
-            res.status(401).send("User not found");
+            res.status(401).json({message: "User not found"});
         }
+
     }catch(err){
-        console.log("suppression failed\n" + err);
-        res.status(500).send("Error");
+        console.log("Delete failed");
+        res.status(500).json({message: err.message});
     }
 
 }
 
 module.exports.banUser = async (req, res) =>{
+    _id = req.params.id;
     try{
-        const user=await User.findById(req.params.id);
+        const user=await User.findOneAndUpdate({_id}, {status: 'banned'}, {new: true});
         if(user){
-                // await User.updateOne({_id:req.params.id}, req.body);
-                await User.updateOne({_id:req.params.id}, {isBanned:true});
-                console.log(`LOGS: ban succeded of user with id= ${req.params.id}`);
-                res.status(200).send("SUCCESS: ban successded for the user");
-            }else{
-            res.status(404).send("User not found");
+            res.status(200).json(user);
+
+        }else{
+            res.status(401).json({message: "User not found"});
         }
+
     }catch(err){
-        console.log("Ban failed\n" + err);
-        res.status(500).send("Ban failed");
+        console.log("bane failed");
+        res.status(500).json({message: err.message});
     }
 
 }
 
 module.exports.unbanUser = async (req, res) =>{
+    _id = req.params.id;
     try{
-        const user=await User.findById(req.params.id);
+        const user=await User.findOneAndUpdate({_id}, {status: 'confirmed'}, {new: true});
         if(user){
-                // await User.updateOne({_id:req.params.id}, req.body);
-                await User.updateOne({_id:req.params.id}, {isBanned:false});
-                console.log(`LOGS: unban succeded of user with id= ${req.params.id}`);
-                res.status(200).send("SUCCESS: unban successded for the user");
-            }else{
-            res.status(404).send("User not found");
+            res.status(200).json(user);
+
+        }else{
+            res.status(401).json({message: "User not found"});
         }
     }catch(err){
-        console.log("Unban failed\n" + err);
-        res.status(500).send("Unban failed");
+        console.log("Unban failed");
+        res.status(500).json({message: err.message});
     }
 
 }
 
 //simple user to admin
 module.exports.promoteUser = async (req, res) =>{
+    _id = req.params.id;
     try{
-        const user=await User.findById(req.params.id);
+        const user=await User.findOneAndUpdate({_id}, {isAdmin: true}, {new: true});
         if(user){
-                // await User.updateOne({_id:req.params.id}, req.body);
-                await User.updateOne({_id:req.params.id}, {isAdmin:true});
-                console.log(`LOGS: update to admin succeded of user with id= ${req.params.id}`);
-                res.status(200).send("SUCCESS: update to admin successded for the user");
-            }else{
-            res.status(404).send("User not found");
+            res.status(200).json(user);
+
+        }else{
+            res.status(401).json({message: "User not found"});
         }
     }catch(err){
-        console.log("Updating to admin failed\n" + err);
-        res.status(500).send("Updating to admin failed");
+        console.log("Promotion to admin failed");
+        res.status(500).json({message: err.message});
     }
 
 }
 
 //admin to simple user
 module.exports.demoteUser = async (req, res) =>{
+    _id = req.params.id;
     try{
-        const user=await User.findById(req.params.id);
+        const user=await User.findOneAndUpdate({_id}, {isAdmin: false}, {new: true});
         if(user){
-                // await User.updateOne({_id:req.params.id}, req.body);
-                await User.updateOne({_id:req.params.id}, {isAdmin:false});
-                console.log(`LOGS: update to simple user succeded of user with id= ${req.params.id}`);
-                res.status(200).send("SUCCESS: update to simple user successded for the user");
-            }else{
-            res.status(404).send("User not found");
+            res.status(200).json(user);
+
+        }else{
+            res.status(401).json({message: "User not found"});
         }
     }catch(err){
-        console.log("Updating to simple user failed\n" + err);
-        res.status(500).send("Updating to simple user failed");
+        console.log("Demotion to normale member failed\n");
+        res.status(500).json({message: err.message});
     }
 
 }

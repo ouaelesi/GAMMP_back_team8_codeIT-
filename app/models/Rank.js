@@ -3,15 +3,18 @@ const mongoose = require("mongoose");
 const rankSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true,
   },
   generalPoints: {
     type: Number,
     required: true,
+    default: 0,
   },
   totalAddedPoints: {
     type: Number,
     required: true,
+    default: 0,
   },
   history: [{
     addedPoints: {

@@ -1,25 +1,13 @@
 const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String, //warning, promotion, demotion, addition to an activity
-    required: true,
-  },
-  body: {
-    type: String,
-    required: true,
-  },
-  from: {
-    type: String, //admin, system
-    required: true,
-  },
   receiver: {
-    type: mongoose.Schema.Types.ObjectId , // mongoose.Schema.Types.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
+  },
+  content: {
+    type: String,
     required: true,
   },
   isRead: {
