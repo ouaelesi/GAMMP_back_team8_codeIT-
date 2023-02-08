@@ -1,8 +1,19 @@
 const User = require('../models/User') ;
+const Rank = require('../models/Rank');
 
 module.exports.insertUser = async (req, res) =>{
     try{
+        //creat a new user
         const user = await User.create(req.body);
+
+        //creating the rank associated to the user
+        const _id = user._id;
+        const rank = await Rank.create({owner: _id});
+
+        //update the rank field of the user
+        user.rank = rank._id;
+        await user.save();
+
         res.status(200).json(user);
 
     }catch(err){

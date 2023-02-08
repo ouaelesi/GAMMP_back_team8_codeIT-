@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Rank = require("../models/Rank");
 const jwt = require('jsonwebtoken');
 
 
