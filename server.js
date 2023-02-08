@@ -28,8 +28,4 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
   .catch((err) => console.log(err));
   
 
-app.use(notificationsRoutes);
-app.use(activitiesRoutes);
-app.use(userRoutes);
-app.use(adminRoutes);
 
