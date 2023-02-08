@@ -58,6 +58,9 @@ const userSchema = new mongoose.Schema({
     enum: ["none","development", "design", "multimedia", "communication", "marketing"],
     default: "none",
   },
+  lastContributionDate: {
+    type: Date
+  },
   contributions: [{
     activityID: {
       type: mongoose.Schema.Types.ObjectId,

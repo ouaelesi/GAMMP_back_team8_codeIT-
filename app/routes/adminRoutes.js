@@ -13,4 +13,6 @@ router.put('/user/unban/:id', adminController.unbanUser);
 router.put('/user/promote/:id', adminController.promoteUser);
 router.put('/user/demote/:id', adminController.demoteUser);
 
+
+
 module.exports = router;
