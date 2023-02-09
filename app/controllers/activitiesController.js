@@ -25,13 +25,17 @@ module.exports.post = async (req, res) =>{
         const activity = await Activity.create(req.body);
         res.status(200).send(activity);
         const leaders = await activity.teamLeaders.find();
-        leaders.forEach( leader => {
-            leader.rank.totalAddedPoints += 10;
-            // const ranks = await Rank.find({}, {history: 0 })
+        leaders.forEach( async leader => {
+            // leader.rank.totalAddedPoints += 10;
+            const leaderPoint = 10;
+            const rank = await Rank.findById(leader._id);
+            rank.totalAddedPoints += leaderPoint ;
         });
         const organizers = await activity.organizers.find();
-        organizers.forEach( organizer => {
-            organizer.rank.totalAddedPoints += 5;
+        organizers.forEach( async organizer => {
+            const leaderPoint = 10;
+            const rank = await Rank.findById(organizer._id);
+            rank.totalAddedPoints += leaderPoint ;
         });
     }catch(err){
         console.log("creation failed ");
