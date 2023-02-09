@@ -35,7 +35,7 @@ module.exports.requireAuth = (req, res, next) => {
 
         if (err) {
           console.log(err.message);
-          res.redirect('/login');
+          res.redirect('/user/login');
 
         } else {
           next();
@@ -43,6 +43,6 @@ module.exports.requireAuth = (req, res, next) => {
       });
 
     } else {
-      res.redirect('/login');
+      res.redirect('/user/login');
     }
 };

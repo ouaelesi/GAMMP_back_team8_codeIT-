@@ -19,16 +19,11 @@ const activitySchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  managers: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  }],
   teamLeaders: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-    }],
+  }],
   organizers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -36,7 +31,7 @@ const activitySchema = new mongoose.Schema({
   }],
   date: [{
     type: Date,
-    required: true,
+    // required: true,
   }]
 }, {timestamps: true});
 

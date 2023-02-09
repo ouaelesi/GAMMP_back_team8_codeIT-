@@ -3,28 +3,49 @@ const Notification = require('../models/Notification');
 
 module.exports.verifyInactiveMembers = async (req, res) =>{
     try{
+        const admins = await User.find({isAdmin: true});
         const users= await User.find();
+
         for(const user of users){
+
             if(user.isActive == false){
                 continue;
-            }else{
-            let inactiveMemberInfos= "";
-            let actualDate = new Date();
-            let lastEventDate = new Date(user.lastContributionDate);
-            var diff = Math.abs(actualDate.getTime() - lastEventDate.getTime());
-            var days = Math.floor(diff / (3600000*24));
-                if(days > 30 ){
-                    user.isActive= true;
-                    inactiveMemberInfos= toString(user._id) + toString(user.firstName) + toString(user.lastName);
+            }
+            else{
+                let inactiveMemberInfos= "";
+                let actualDate = new Date();
+                let lastEventDate = new Date(user.lastContributionDate);
+                var diff = Math.abs(actualDate.getTime() - lastEventDate.getTime());
+                var days = Math.floor(diff / (3600000*24));
 
-                    //send notification
-                    notificationsController.notificationAdmin_create
+                if(diff > 30 ){
 
-                    console.log(`inactive member`);
+                    user.isActive= false;
+                    inactiveMemberInfos= `${user._id} ${user.firstName} ${user.lastName} ${user.discordID}`;
+
+                    // send a notification to all admins
+                    for(const admin of admins){
+
+                        //create the notification document
+                        const notification = await Notification.create({
+                            receiver: '63e5328ac9fbe5d56e17d6e2',
+                            content: inactiveMemberInfos,
+                            isRead: false,
+                        })
+    
+                        // update admin's notifs array
+                        
+                        admin.notifications.push(notification._id);
+                        await admin.save();
+                    }
+
+                    //update the user document
+                    await user.save();
+                    
                 }
             }
         }
-            console.log(`parcour finie`);
+
     }catch(err){
         console.log(`parcour failed\n${err}`);
     }

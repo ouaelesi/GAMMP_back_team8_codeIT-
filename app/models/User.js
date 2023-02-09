@@ -80,15 +80,19 @@ const userSchema = new mongoose.Schema({
     },
     role: {
       type: String,
-      enum: ["project-manager", "manager", "team-leader", "organizer"],
+      enum: ["main-manager", "team-leader", "organizer"],
       default: "organizer",
     }
   }],
   rank: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Rank'
-  }
-});
+  },
+  notifications: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Notification'
+  }]
+}, {timestamps: true});
 
 // function to hash the password before saving it to the database
 userSchema.pre('save', async function(next) {

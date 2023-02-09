@@ -21,22 +21,58 @@ module.exports.get = async (req, res) =>{
 }
 
 module.exports.post = async (req, res) =>{
+    /*
+    req.body = {
+        name: string,
+        type: string,
+        description: string,
+        mainManager: objectID,
+        teamLeaders: [objectID],
+        organizers: [objectID],
+    }
+    */
+
     try{
+        //create the activity document
         const activity = await Activity.create(req.body);
-        res.status(200).send(activity);
-        const leaders = await activity.teamLeaders.find();
-        leaders.forEach( async leader => {
-            // leader.rank.totalAddedPoints += 10;
-            const leaderPoint = 10;
-            const rank = await Rank.findById(leader._id);
-            rank.totalAddedPoints += leaderPoint ;
-        });
-        const organizers = await activity.organizers.find();
-        organizers.forEach( async organizer => {
-            const organizerPoint = 5;
-            const rank = await Rank.findById(organizer._id);
-            rank.totalAddedPoints += organizerPoint ;
-        });
+
+        //add the activity to each member by their role + add automatic points
+
+        //add to main manager
+        const mainManager = await User.findById(req.body.mainManager);
+        mainManager.contributions.push({activityID: activity._id, role: "main-manager"});
+        mainManager.save();
+
+        const mainManagerRank = await Rank.findById(mainManager.rank);
+        mainManagerRank.totalAddedPoints += 20;
+        mainManagerRank.generalPoints += 20;
+        mainManagerRank.save();
+
+        //add to leaders
+        req.body.teamLeaders.forEach(async teamLeaderID => {
+            const teamLeader = await User.findById(teamLeaderID);
+            teamLeader.contributions.push({activityID: activity._id, role: "team-leader"})
+            teamLeader.save();
+
+            const teamLeaderRank = await Rank.findById(teamLeader.rank);
+            teamLeaderRank.totalAddedPoints += 15;
+            teamLeaderRank.generalPoints += 15;
+            teamLeaderRank.save();
+        })
+
+        //add to organizers
+        req.body.organizers.forEach(async organizerID => {
+            const organizer = await User.findById(organizerID);
+            organizer.contributions.push({activityID: activity._id, role: "organizer"});
+            organizer.save();
+
+            const organizerRank = await Rank.findById(organizer.rank);
+            organizerRank.totalAddedPoints += 10;
+            organizerRank.generalPoints += 10;
+            organizerRank.save();
+        })
+
+        res.status(200).json(activity);
     }catch(err){
         console.log("creation failed ");
         res.status(500).json({message: err.message});

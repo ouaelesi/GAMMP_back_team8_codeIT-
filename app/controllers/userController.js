@@ -60,7 +60,7 @@ module.exports.login_post = async (req, res) => {
             const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin, role: user.role }, "GDG for once, GDG forever!", {expiresIn: maxAge});
            
             res.cookie('jwt', token, { httpOnly: true, maxAge});
-            res.status(200).json({ id: user._id, isAdmin: user.isAdmin });
+            res.status(200).json({ id: user._id, isAdmin: user.isAdmin, role: user.role });
         }
     } 
     catch (err) {
