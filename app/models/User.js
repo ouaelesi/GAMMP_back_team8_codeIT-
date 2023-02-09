@@ -45,11 +45,16 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
-  // isBanned: {
-  //   type: Boolean,
-  //   required: true,
-  //   default: false,
-  // },
+  isBanned: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  isActive: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
   role: {
     type: String,
     enum: ["lead", "co-lead", "manager", "member", "alumni"],
@@ -65,16 +70,9 @@ const userSchema = new mongoose.Schema({
     enum: ["none","development", "design", "multimedia", "communication", "marketing"],
     default: "none",
   },
-<<<<<<< HEAD
   lastContributionDate: {
     type: Date
   },
-=======
-  notifications: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Notification',
-  }],
->>>>>>> 5bcac0a6fc89fc3134455e97bf233193ba3aaaca
   contributions: [{
     activityID: {
       type: mongoose.Schema.Types.ObjectId,
@@ -92,14 +90,14 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-//function to hash the password before saving it to the database
+// function to hash the password before saving it to the database
 userSchema.pre('save', async function(next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt); //"this" refers to the local version of the document (object) before it's saved
   next();
 });
 
-//function to hash the password when it's updated before it's saved to the database
+// function to hash the password when it's updated before it's saved to the database
 userSchema.pre('findOneAndUpdate', async function(next) {
   try {
     const salt = await bcrypt.genSalt();

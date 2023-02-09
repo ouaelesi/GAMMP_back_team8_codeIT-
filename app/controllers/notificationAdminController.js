@@ -1,32 +1,62 @@
-const { default: mongoose } = require('mongoose');
 const User = require('../models/User') ;
-const { use } = require('../routes/notificationRoutes');
-
-
-
+const Notification = require('../models/Notification');
 
 module.exports.verifyInactiveMembers = async (req, res) =>{
     try{
-        const users = await User.find();
-        let i = 0;
-        while (users[i]) {
+        const users= await User.find();
+        for(const user of users){
+            if(user.isActive == false){
+                continue;
+            }else{
+            let inactiveMemberInfos= "";
             let actualDate = new Date();
-            let lastEventDate = new Date(users[i].lastContributionDate);
+            let lastEventDate = new Date(user.lastContributionDate);
             var diff = Math.abs(actualDate.getTime() - lastEventDate.getTime());
             var days = Math.floor(diff / (3600000*24));
                 if(days > 30 ){
+                    user.isActive= true;
+                    inactiveMemberInfos= toString(user._id) + toString(user.firstName) + toString(user.lastName);
+
                     //send notification
+                    notificationsController.notificationAdmin_create
+
                     console.log(`inactive member`);
                 }
-            i++;
+            }
         }
             console.log(`parcour finie`);
-            res.status(404).send("User not found");
-            
     }catch(err){
         console.log(`parcour failed\n${err}`);
-    // res.status(500).send("parcour failed failed");
     }
+}
+
+module.exports.notificationAdmin_create = async (req,res)=>{
+	try {
+        const users= await User.find();
+        const admins= [];
+        users.forEach(user => {
+            if(user.isAdmin){
+                admins.push(user);
+            }
+        });
+        admins.forEach(async (admin) => {
+            const receiver_id = admin._id;
+            console.log(typeof(req.body), req.body);
+            const notification = await Notification.create({content: "This member is inactive" + inactiveMemberInfos, isRead:false, receiver: receiver_id});
+            console.log(notification);
+
+            res.status(201).json({
+                message: "Notification created!",
+                id: notification._id,
+                body: notification.content,
+                to: notification.receiver,
+              });
+        });
+
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    }
+
 }
 
 
