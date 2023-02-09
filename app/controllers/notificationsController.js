@@ -64,12 +64,13 @@ module.exports.notification_create = async (req,res)=>{
         res.status(201).json({
             message: "Notification created!",
             id: notification._id,
-            title: notification.title,
-            body: notification.body,
-            date: notification.date,
-            from: notification.from,
+            // title: notification.title,
+            // body: notification.body,
+            body: notification.content,
+            // date: notification.date,
+            // from: notification.from,
             to: notification.receiver,
-            type: notification.type
+            // type: notification.type
           });
 
     } catch (error) {
@@ -89,3 +90,5 @@ module.exports.notification_delete = (req, res)=>{
         }
     })
 }
+
+

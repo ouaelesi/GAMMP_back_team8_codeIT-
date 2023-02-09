@@ -15,4 +15,6 @@ router.put('/user/unban/:id', requireAuth, requireAdmin ,adminController.unbanUs
 router.put('/user/promote/:id', requireAuth, requireAdmin ,adminController.promoteUser);
 router.put('/user/demote/:id', requireAuth, requireAdmin ,adminController.demoteUser);
 
+
+
 module.exports = router;

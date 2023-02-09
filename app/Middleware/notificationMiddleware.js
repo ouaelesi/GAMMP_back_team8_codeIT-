@@ -1,0 +1,1 @@
+//const int = setInterval(()=>console.log('in the time out'), 1000)
