@@ -33,9 +33,9 @@ module.exports.post = async (req, res) =>{
         });
         const organizers = await activity.organizers.find();
         organizers.forEach( async organizer => {
-            const leaderPoint = 10;
+            const organizerPoint = 5;
             const rank = await Rank.findById(organizer._id);
-            rank.totalAddedPoints += leaderPoint ;
+            rank.totalAddedPoints += organizerPoint ;
         });
     }catch(err){
         console.log("creation failed ");
